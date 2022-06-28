@@ -7,6 +7,7 @@ import com.pluscubed.logcat.reader.ScrubberUtils;
 import com.pluscubed.logcat.util.LogLineAdapterUtil;
 import com.pluscubed.logcat.util.UtilLogger;
 
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -127,18 +128,38 @@ public class LogLine {
         return ' ';
     }
 
+    private static String getLogColorHex(int logLevel) {
+
+        switch (logLevel) {
+            case Log.DEBUG:
+                return "#0000FF";
+            case Log.ERROR:
+                return "#FF0000";
+            case Log.INFO:
+                return "#006633";
+            case Log.VERBOSE:
+                return "#000000";
+            case Log.WARN:
+                return "#FF8000";
+        }
+        return "#FFFFFF";
+    }
+
     public String getOriginalLine() {
 
         if (logLevel == -1) { // starter line like "begin of log etc. etc."
             return logOutput;
         }
-
         StringBuilder stringBuilder = new StringBuilder();
-
+        stringBuilder.append("<font color=");
+        stringBuilder.append(getLogColorHex(logLevel));
+        stringBuilder.append(">");
         if (timestamp != null) {
             stringBuilder.append(timestamp).append(' ');
         }
 
+//        String l = "<font color=\"%s\">%s<br></font>";
+//        String.format(l, getLogColorHex(logLevel), );
         stringBuilder.append(convertLogLevelToChar(logLevel))
                 .append('/')
                 .append(tag)
@@ -146,7 +167,7 @@ public class LogLine {
                 .append(processId)
                 .append("): ")
                 .append(logOutput);
-
+        stringBuilder.append("<br></font>");
         return stringBuilder.toString();
     }
 

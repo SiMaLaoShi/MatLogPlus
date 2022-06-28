@@ -506,7 +506,6 @@ public class LogcatActivity extends BaseActivity implements FilterListener, LogL
         invalidateDarkOrLightMenuItems(this, menu);
 
         boolean showingMainLog = (mTask != null);
-
         MenuItem item = menu.findItem(R.id.menu_expand_all);
         if (mCollapsedMode) {
             item.setIcon(R.drawable.ic_expand_more_white_24dp);
@@ -1299,20 +1298,33 @@ public class LogcatActivity extends BaseActivity implements FilterListener, LogL
     private List<CharSequence> getCurrentLogAsListOfStrings() {
 
         List<CharSequence> result = new ArrayList<>(mLogListAdapter.getItemCount());
-
-        for (int i = 0; i < mLogListAdapter.getItemCount(); i++) {
+        result.add("<html>");
+        result.add("<head>");
+        result.add(String.format("<title>%s</title>", DialogHelper.getDateStr()));
+        result.add("</head>");
+        result.add("<body style='background-color:#CCEED0;'>");
+        for (int i = 1; i < mLogListAdapter.getItemCount(); i++) {
             result.add(mLogListAdapter.getItem(i).getOriginalLine());
         }
-
+        result.add("</body>");
+        result.add("</html>");
         return result;
     }
 
     private CharSequence getCurrentLogAsCharSequence() {
         StringBuilder stringBuilder = new StringBuilder();
 
-        for (int i = 0; i < mLogListAdapter.getItemCount(); i++) {
+        stringBuilder.append("<html>");
+        stringBuilder.append("<head>");
+        stringBuilder.append(String.format("<title>%s</title>", DialogHelper.getDateStr()));
+        stringBuilder.append("</head>");
+        stringBuilder.append("<body style='background-color:#CCEED0;'>");
+        for (int i = 1; i < mLogListAdapter.getItemCount(); i++) {
             stringBuilder.append(mLogListAdapter.getItem(i).getOriginalLine()).append('\n');
         }
+        stringBuilder.append("</body>");
+        stringBuilder.append("</html>\"");
+
 
         return stringBuilder;
     }
@@ -1398,7 +1410,7 @@ public class LogcatActivity extends BaseActivity implements FilterListener, LogL
             mHandler.post(() -> {
                 if (saved) {
                     Toast.makeText(getApplicationContext(), R.string.log_saved, Toast.LENGTH_SHORT).show();
-                    openLogFile(filename);
+//                    openLogFile(filename);
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.unable_to_save_log, Toast.LENGTH_LONG).show();
                 }

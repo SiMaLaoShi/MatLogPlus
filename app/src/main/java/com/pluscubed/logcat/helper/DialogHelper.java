@@ -65,7 +65,7 @@ public class DialogHelper {
                 || (filenameAsString = filename.toString()).contains("/")
                 || filenameAsString.contains(":")
                 || filenameAsString.contains(" ")
-                || !filenameAsString.endsWith(".txt");
+                || (!filenameAsString.endsWith(".html") && !filenameAsString.endsWith(".html") );
 
     }
 
@@ -157,21 +157,22 @@ public class DialogHelper {
     }
 
     public static String createLogFilename() {
+        return getDateStr() + ".html";
+    }
+
+    public static String getDateStr() {
         Date date = new Date();
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(date);
-
         DecimalFormat twoDigitDecimalFormat = new DecimalFormat("00");
         DecimalFormat fourDigitDecimalFormat = new DecimalFormat("0000");
-
         String year = fourDigitDecimalFormat.format(calendar.get(Calendar.YEAR));
         String month = twoDigitDecimalFormat.format(calendar.get(Calendar.MONTH) + 1);
         String day = twoDigitDecimalFormat.format(calendar.get(Calendar.DAY_OF_MONTH));
         String hour = twoDigitDecimalFormat.format(calendar.get(Calendar.HOUR_OF_DAY));
         String minute = twoDigitDecimalFormat.format(calendar.get(Calendar.MINUTE));
         String second = twoDigitDecimalFormat.format(calendar.get(Calendar.SECOND));
-
-        return year + "-" + month + "-" + day + "-" + hour + "-" + minute + "-" + second + ".txt";
+        return year + "-" + month + "-" + day + "-" + hour + "-" + minute + "-" + second;
     }
 
 }
