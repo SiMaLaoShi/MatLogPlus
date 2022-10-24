@@ -86,12 +86,15 @@ import com.pluscubed.logcat.util.StringUtil;
 import com.pluscubed.logcat.util.UtilLogger;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import static com.pluscubed.logcat.data.LogLineViewHolder.CONTEXT_MENU_COPY_ID;
@@ -817,19 +820,28 @@ public class LogcatActivity extends BaseActivity implements FilterListener, LogL
 
 
     private void showFilterPidDialog() {
-
         List<AndroidAppProcess> processes = AndroidProcesses.getRunningAppProcesses();
-        String[] pids = new String[processes.size()];
+        List<Integer> pidList = new ArrayList<>();
+        List<String> pkgList = new ArrayList<>();
+        pidList.add(0);
+        pkgList.add("no filter (Default)");
         for (int i = 0; i < processes.size(); i++) {
-            pids[i] = String.format("(%s) %s", processes.get(i).pid, processes.get(i).getPackageName());
+            pidList.add(processes.get(i).pid);
+            pkgList.add(processes.get(i).getPackageName());
+        }
+        String[] pidDescArray = new String[pidList.size()];
+        int idx = 0;
+        for (int i = 0; i < pidDescArray.length; i++) {
+            pidDescArray[i] = String.format("(%s) %s", pidList.get(i), pkgList.get(i));
+            if (pidList.get(i) == mLogListAdapter.getPidLimit())
+                idx = i;
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
         builder.setTitle("pid")
                 .setCancelable(true)
-                .setSingleChoiceItems(pids, mLogListAdapter.getPidLimit(), (dialog, which) -> {
-                    mLogListAdapter.setLogPidLimit(processes.get(which).pid);
-                    log.d("pid", which);
+                .setSingleChoiceItems(pidDescArray, idx, (dialog, which) -> {
+                    mLogListAdapter.setLogPidLimit(pidList.get(which));
+                    log.d("pid", pidList.get(which));
                     pidChanged();
                     dialog.dismiss();
                 });
