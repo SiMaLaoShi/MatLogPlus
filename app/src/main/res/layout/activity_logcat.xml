@@ -31,20 +31,20 @@
             android:visibility="gone"
             tools:visibility="visible" />
 
+        <!--TODO: Change border width back to 0.5dp when design library is fixed-->
         <com.l4digital.fastscroll.FastScrollRecyclerView
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:dividerHeight="0dp"
-            android:paddingBottom="2dp"
             android:paddingTop="1dp"
+            android:paddingBottom="2dp"
             android:scrollbarSize="0dp"
             android:scrollbars="vertical"
             app:bubbleColor="?colorAccent"
-            app:handleColor="#999999"/>
+            app:handleColor="#999999" />
 
-        <!--TODO: Change border width back to 0.5dp when design library is fixed-->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"

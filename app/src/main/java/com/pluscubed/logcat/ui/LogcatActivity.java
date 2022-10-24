@@ -52,6 +52,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.material.snackbar.Snackbar;
+import com.jaredrummler.android.processes.AndroidProcesses;
+import com.jaredrummler.android.processes.models.AndroidAppProcess;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.pluscubed.logcat.BuildConfig;
 import com.pluscubed.logcat.LogcatRecordingService;
@@ -655,6 +657,9 @@ public class LogcatActivity extends BaseActivity implements FilterListener, LogL
             case R.id.menu_filters:
                 showFiltersDialog();
                 return true;
+            case R.id.menu_filter_pid:
+                showFilterPidDialog();
+                return true;
         }
         return false;
     }
@@ -808,6 +813,28 @@ public class LogcatActivity extends BaseActivity implements FilterListener, LogL
                 });
             });
         }).start();
+    }
+
+
+    private void showFilterPidDialog() {
+
+        List<AndroidAppProcess> processes = AndroidProcesses.getRunningAppProcesses();
+        String[] pids = new String[processes.size()];
+        for (int i = 0; i < processes.size(); i++) {
+            pids[i] = String.format("(%s) %s", processes.get(i).pid, processes.get(i).getPackageName());
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("pid")
+                .setCancelable(true)
+                .setSingleChoiceItems(pids, mLogListAdapter.getPidLimit(), (dialog, which) -> {
+                    mLogListAdapter.setLogPidLimit(processes.get(which).pid);
+                    log.d("pid", which);
+                    pidChanged();
+                    dialog.dismiss();
+                });
+
+        builder.show();
     }
 
     private void showAddFilterDialog(final FilterAdapter filterAdapter) {
@@ -1719,6 +1746,10 @@ public class LogcatActivity extends BaseActivity implements FilterListener, LogL
 
 
     private void logLevelChanged() {
+        search(mSearchingString);
+    }
+
+    private void pidChanged() {
         search(mSearchingString);
     }
 

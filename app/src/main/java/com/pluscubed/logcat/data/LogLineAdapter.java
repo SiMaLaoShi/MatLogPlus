@@ -12,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * stolen almost completely from ArrayAdapter.java - nolan
  */
 
@@ -64,6 +64,7 @@ public class LogLineAdapter extends RecyclerView.Adapter<LogLineViewHolder> impl
     private ArrayFilter mFilter;
 
     private int logLevelLimit = 0;
+    private int pidLimit = 0;
 
 
     /**
@@ -300,7 +301,7 @@ public class LogLineAdapter extends RecyclerView.Adapter<LogLineViewHolder> impl
 
         int selectedBackground = logLine.isHighlighted()
                 ? PreferenceHelper.getColorScheme(context).getSelectedColor(context)
-                : ContextCompat.getColor(context,android.R.color.transparent);
+                : ContextCompat.getColor(context, android.R.color.transparent);
         holder.itemView.setBackgroundColor(selectedBackground);
     }
 
@@ -328,6 +329,14 @@ public class LogLineAdapter extends RecyclerView.Adapter<LogLineViewHolder> impl
 
     public void setLogLevelLimit(int logLevelLimit) {
         this.logLevelLimit = logLevelLimit;
+    }
+
+    public int getPidLimit() {
+        return pidLimit;
+    }
+
+    public void setLogPidLimit(int pid) {
+        this.pidLimit = pid;
     }
 
     /**
@@ -387,7 +396,9 @@ public class LogLineAdapter extends RecyclerView.Adapter<LogLineViewHolder> impl
 
             for (LogLine logLine : logLines) {
                 if (logLine != null &&
-                        LogLineAdapterUtil.logLevelIsAcceptableGivenLogLevelLimit(logLine.getLogLevel(), logLevelLimit)) {
+                        LogLineAdapterUtil.logLevelIsAcceptableGivenLogLevelLimit(logLine.getLogLevel(), logLevelLimit)
+                        && (pidLimit == 0 || pidLimit == logLine.getProcessId())
+                ) {
                     allValues.add(logLine);
                 }
             }

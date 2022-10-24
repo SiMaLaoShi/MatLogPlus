@@ -84,6 +84,12 @@
         android:title="@string/title_filters" />
 
     <item
+        android:id="@+id/menu_filter_pid"
+        android:alphabeticShortcut="@string/title_filter_by_pid"
+        android:icon="@drawable/ic_filter_list_white_24dp"
+        android:title="@string/title_filter_by_pid" />
+
+    <item
         android:id="@+id/menu_send_log_zip"
         android:alphabeticShortcut="@string/share_log"
         android:icon="@drawable/ic_share_white_24dp"

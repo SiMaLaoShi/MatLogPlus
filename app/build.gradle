@@ -104,6 +104,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 
     implementation 'com.mikhaellopez:circularprogressbar:2.0.0'
+
+    implementation 'com.jaredrummler:android-processes:1.1.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

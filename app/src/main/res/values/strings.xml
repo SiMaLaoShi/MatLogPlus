@@ -200,6 +200,7 @@
 
     <string name="title_filter">Filter</string>
     <string name="title_filters">Filters</string>
+    <string name="title_filter_by_pid" translatable="false">Filter By Pid</string>
 
     <string name="toast_invalid_display_limit">Please enter a valid number between %1$d and %2$d.</string>
     <string name="toast_invalid_level">Invalid level name: %s</string>
