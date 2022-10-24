@@ -1,5 +1,16 @@
 ![Icon](./app/src/main/res/mipmap-hdpi/ic_launcher.png)MatLog
 =========
+
+
+
+### 20221024
+
+- 增加通過pid來过滤日志
+
+![image-20221024161507882](image-20221024161507882.png)
+
+
+
 It's CatLog, but with material goodness.
 
 Graphical log reader for Android.
